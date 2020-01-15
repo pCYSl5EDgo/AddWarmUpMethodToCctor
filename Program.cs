@@ -66,7 +66,10 @@ namespace AddWarmUpMethodToCctor
         private static MethodDefinition AddWarmUp(TypeDefinition typeDefinition)
         {
             var module = typeDefinition.Module;
-            var warmUp = new MethodDefinition("<>WarmUp", MethodAttributes.Private | MethodAttributes.HideBySig | MethodAttributes.Static, module.TypeSystem.Void);
+            var warmUp = new MethodDefinition("<>WarmUp", MethodAttributes.Private | MethodAttributes.HideBySig | MethodAttributes.Static, module.TypeSystem.Void)
+            {
+                AggressiveInlining = true,
+            };
             warmUp.Body.GetILProcessor().Append(Instruction.Create(OpCodes.Ret));
             typeDefinition.Methods.Add(warmUp);
             return warmUp;
